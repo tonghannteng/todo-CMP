@@ -1,8 +1,37 @@
 package com.tonghannteng.todo.navigation
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 
 @Composable
 actual fun NavGraph() {
-    // TODO: NEEDS TO BE IMPLEMENTED WHEN NAVIGATION 3 BECOMES AVAILABLE FOR IOS.
+    val navController = rememberNavController()
+    NavHost(
+        navController = navController,
+        startDestination = Screen.Home
+    ) {
+        composable<Screen.Home> {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = "Hello iOS!",
+                    color = Color.White
+                )
+            }
+
+        }
+        composable<Screen.Task> {  }
+    }
 }

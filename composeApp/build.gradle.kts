@@ -63,7 +63,7 @@ kotlin {
 
             implementation(libs.sqldelight.coroutines)
         }
-        commonTest.dependencies {
+        iosMain.dependencies {
             implementation(libs.navigation2)
             implementation(libs.sqldelight.ios)
         }
