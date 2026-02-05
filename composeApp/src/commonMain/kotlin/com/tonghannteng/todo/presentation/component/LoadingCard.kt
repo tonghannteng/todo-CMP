@@ -1,4 +1,4 @@
-package com.tonghannteng.todo.presentation
+package com.tonghannteng.todo.presentation.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

@@ -1,4 +1,4 @@
-package com.tonghannteng.todo.presentation
+package com.tonghannteng.todo.presentation.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -18,7 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.tonghannteng.todo.domain.Priority
-import com.tonghannteng.todo.presentation.PriorityColors.getColor
+import com.tonghannteng.todo.presentation.component.PriorityColors.getColor
 
 @Composable
 fun PriorityChip(
