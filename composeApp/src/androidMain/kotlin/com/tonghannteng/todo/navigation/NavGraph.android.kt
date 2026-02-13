@@ -1,10 +1,10 @@
 package com.tonghannteng.todo.navigation
 
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
 import com.tonghannteng.todo.presentation.screen.home.HomeScreen
+import com.tonghannteng.todo.presentation.screen.task.TaskScreen
 import org.koin.compose.koinInject
 
 @Composable
@@ -21,7 +21,12 @@ actual fun NavGraph() {
                 })
             }
             entry<Screen.Task> {
-                Text(text = "Task Screen")
+                TaskScreen(
+                    id = it.id,
+                    navigateBack = {
+                        navigator.goBack()
+                    }
+                )
             }
         }
     )

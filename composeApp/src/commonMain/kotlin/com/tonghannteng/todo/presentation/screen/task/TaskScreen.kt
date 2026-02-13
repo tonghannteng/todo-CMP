@@ -1,5 +1,168 @@
 package com.tonghannteng.todo.presentation.screen.task
 
-fun TaskScreen() {
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.ime
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import com.tonghannteng.todo.domain.Priority
+import com.tonghannteng.todo.presentation.component.PriorityChip
+import com.tonghannteng.todo.presentation.component.PriorityChipSize
+import com.tonghannteng.todo.util.Alpha
+import com.tonghannteng.todo.util.Resource
+import org.jetbrains.compose.resources.painterResource
+import org.koin.compose.viewmodel.koinViewModel
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun TaskScreen(
+    id: String?,
+    navigateBack: () -> Unit
+) {
+    val viewModel = koinViewModel<TaskViewModel>()
+    val uiState by viewModel.uiState
+
+
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text(text = "Task") },
+                navigationIcon = {
+                    IconButton(onClick = navigateBack) {
+                        Icon(
+                            painter = painterResource(Resource.Icon.BACK_ARROW),
+                            contentDescription = "Back arrow icon"
+                        )
+                    }
+                }
+            )
+        }
+    ) { paddingValues ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues = paddingValues)
+                .windowInsetsPadding(WindowInsets.ime)
+        ) {
+            Column(
+                modifier = Modifier.weight(1f).padding(all = 16.dp).verticalScroll(
+                    rememberScrollState()
+                ),
+                verticalArrangement = Arrangement.spacedBy(24.dp)
+            ) {
+                TaskInputSection(
+                    title = "Task Title",
+                    value = uiState.title,
+                    onValueChange = {},
+                    placeholder = "Enter task title...",
+                    isRequired = true
+                )
+
+                TaskInputSection(
+                    title = "Task Description",
+                    value = uiState.description,
+                    onValueChange = {},
+                    placeholder = "Enter task description...",
+                    isRequired = false
+                )
+
+                PrioritySection(
+                    selectedPriority = uiState.priority,
+                    onPrioritySelected = {}
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun TaskInputSection(
+    modifier: Modifier = Modifier,
+    title: String,
+    value: String,
+    onValueChange: (String) -> Unit,
+    placeholder: String,
+    isRequired: Boolean = false,
+    minLines: Int = 1,
+    maxLines: Int = 2
+) {
+    Column(modifier = Modifier) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.titleMedium
+            )
+            if (isRequired) {
+                Text(
+                    text = "*",
+                    color = MaterialTheme.colorScheme.error,
+                    fontWeight = FontWeight.Black
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(6.dp))
+
+        OutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = value,
+            onValueChange = onValueChange,
+            placeholder = {
+                Text(
+                    text = placeholder,
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = Alpha.HALF)
+                )
+            },
+            shape = RoundedCornerShape(size = 12.dp),
+            minLines = minLines,
+            maxLines = maxLines
+        )
+    }
+}
+
+@Composable
+private fun PrioritySection(
+    selectedPriority: Priority,
+    onPrioritySelected: (Priority) -> Unit
+) {
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        Text(
+            text = "Priority",
+            style = MaterialTheme.typography.titleMedium
+        )
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            Priority.entries.drop(1).forEach { priority ->
+                PriorityChip(
+                    priority = priority,
+                    size = PriorityChipSize.Large,
+                    isSelected = priority == selectedPriority,
+                    onSelect = onPrioritySelected
+                )
+            }
+        }
+    }
 }
