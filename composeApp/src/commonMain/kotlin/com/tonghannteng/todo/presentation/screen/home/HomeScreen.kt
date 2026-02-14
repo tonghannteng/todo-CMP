@@ -84,7 +84,7 @@ fun HomeScreen(
                         ) {
                             TaskCard(
                                 task = it,
-                                onClick = {},
+                                onClick = navigateToTask,
                                 onComplete = {},
                                 onDelete = {}
                             )
