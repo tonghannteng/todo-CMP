@@ -1,37 +1,35 @@
 package com.tonghannteng.todo.navigation
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.tonghannteng.todo.presentation.screen.home.HomeScreen
+import com.tonghannteng.todo.presentation.screen.task.TaskScreen
 
 @Composable
 actual fun NavGraph() {
+
     val navController = rememberNavController()
+
     NavHost(
         navController = navController,
         startDestination = Screen.Home
     ) {
         composable<Screen.Home> {
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(
-                    text = "Hello iOS!",
-                    color = Color.White
-                )
-            }
-
+            HomeScreen(
+                navigateToTask = { taskId ->
+                    navController.navigate(route = Screen.Task(taskId))
+                }
+            )
         }
-        composable<Screen.Task> {  }
+        composable<Screen.Task> {
+            TaskScreen(
+                id = it.id,
+                navigateBack = {
+                    navController.navigateUp()
+                }
+            )
+        }
     }
 }
